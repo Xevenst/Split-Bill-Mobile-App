@@ -17,6 +17,7 @@ class AddBillPage extends StatefulWidget {
 class _AddBillPageState extends State<AddBillPage> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController resController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   @override
   AddBillPage get widget => super.widget;
   Widget build(BuildContext context) {
@@ -53,9 +54,10 @@ class _AddBillPageState extends State<AddBillPage> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.contacts),
                     onPressed: () async {
-                      String newValue = await Navigator.push(context,MaterialPageRoute(builder: (context) => RestaurantListPage()));
+                      Set<String> newValue = await Navigator.push(context,MaterialPageRoute(builder: (context) => RestaurantListPage()));
                       setState(() {
-                        resController.text = newValue;
+                        resController.text = newValue.elementAt(0);
+                        nameController.text = newValue.elementAt(1);
                       });
                     },
                   ),
@@ -73,6 +75,7 @@ class _AddBillPageState extends State<AddBillPage> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: TextFormField(
+                controller: nameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Name",

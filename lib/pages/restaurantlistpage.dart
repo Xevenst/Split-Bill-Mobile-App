@@ -18,7 +18,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop("hello");
+            Navigator.of(context).pop({"hello","hi"});
           },
         ),
       ),
