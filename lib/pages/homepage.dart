@@ -12,6 +12,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int count=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +35,16 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context,MaterialPageRoute(builder: (context) => AddBillPage(),));
+          Navigator.push(context,MaterialPageRoute(settings: RouteSettings(name: "AddBillPage"), builder: (context) => AddBillPage(),)).then(onPop);
         },
         child: const Icon(Icons.add),
       ),
     );
+  }
+  onPop(dynamic value)
+  {
+    setState(() {
+      
+    });
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:splitbill/pages/contactslistpage.dart';
-import 'package:splitbill/pages/restaurantlistpage.dart';
+import 'package:splitbill/pages/storelistpage.dart';
 
 class AddBillPage extends StatefulWidget {
   AddBillPage({super.key});
@@ -50,11 +50,11 @@ class _AddBillPageState extends State<AddBillPage> {
                 controller: resController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: "Restaurant Name",
+                  labelText: "Store Name",
                   suffixIcon: IconButton(
                     icon: Icon(Icons.contacts),
                     onPressed: () async {
-                      Set<String> newValue = await Navigator.push(context,MaterialPageRoute(builder: (context) => RestaurantListPage()));
+                      Set<String> newValue = await Navigator.push(context,MaterialPageRoute(settings: RouteSettings(name: "ContactsListPage"), builder: (context) => StoreListPage()));
                       setState(() {
                         resController.text = newValue.elementAt(0);
                         nameController.text = newValue.elementAt(1);
@@ -92,7 +92,7 @@ class _AddBillPageState extends State<AddBillPage> {
             ),
           ],
         ),
-      )
+      ),
     );
   }
 }
