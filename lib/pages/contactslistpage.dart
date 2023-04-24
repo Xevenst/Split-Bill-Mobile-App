@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'addcontactpage.dart';
 
@@ -49,7 +47,7 @@ class _ContactsListState extends State<ContactsList> {
                 searchSelected=true;
                 setState(() {
                   
-                });      
+                });
               },
             )
           ),

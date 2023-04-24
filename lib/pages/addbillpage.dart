@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:splitbill/pages/contactslistpage.dart';
 import 'package:splitbill/pages/storelistpage.dart';
 
@@ -16,7 +13,7 @@ class AddBillPage extends StatefulWidget {
 
 class _AddBillPageState extends State<AddBillPage> {
   final formKey = GlobalKey<FormState>();
-  final TextEditingController resController = TextEditingController();
+  final TextEditingController storeController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   @override
   AddBillPage get widget => super.widget;
@@ -47,7 +44,7 @@ class _AddBillPageState extends State<AddBillPage> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: TextFormField(
-                controller: resController,
+                controller: storeController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: "Store Name",
@@ -56,7 +53,7 @@ class _AddBillPageState extends State<AddBillPage> {
                     onPressed: () async {
                       Set<String> newValue = await Navigator.push(context,MaterialPageRoute(settings: RouteSettings(name: "ContactsListPage"), builder: (context) => StoreListPage()));
                       setState(() {
-                        resController.text = newValue.elementAt(0);
+                        storeController.text = newValue.elementAt(0);
                         nameController.text = newValue.elementAt(1);
                       });
                     },
@@ -64,7 +61,7 @@ class _AddBillPageState extends State<AddBillPage> {
                 ),
                 validator: (value){
                   if(value!.isEmpty){
-                    return "Enter Correct Name";
+                    return "Enter correct data";
                   }
                   else{
                     return null;
@@ -82,7 +79,7 @@ class _AddBillPageState extends State<AddBillPage> {
                 ),
                 validator: (value){
                   if(value!.isEmpty){
-                    return "Enter Correct Name";
+                    return "Enter correct data";
                   }
                   else{
                     return null;

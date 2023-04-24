@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   hive_flutter: any
+  path_provider: any
 
 dev_dependencies:
   flutter_test:

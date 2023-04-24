@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/pages/addbillpage.dart';
+import 'package:splitbill/pages/bill.dart';
 import 'package:splitbill/pages/settingspage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final box = Hive.openBox('BillList');
   int count=0;
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,15 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder:(context, index) {
-          
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box('BillList').listenable(),
+        builder:(context, box, child) {
+          return ListView.builder(
+            itemCount: box.length,
+            itemBuilder:(context, index) {
+              return Bill(box.getAt(count++));
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
