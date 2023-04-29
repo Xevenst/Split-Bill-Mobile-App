@@ -7,18 +7,18 @@ part 'bill.g.dart';
 @HiveType(typeId: 0)
 class Bill extends HiveObject{
   @HiveField(0,defaultValue:"")
-  late String? storeName;
+  late String storeName;
   @HiveField(1,defaultValue: "")
   late String? billDesc;
   @HiveField(2)
   late List<Item> boughtItems;
   @HiveField(3)
-  late String? dateTime;
+  late String dateTime;
   @HiveField(4)
-  late num? price;
+  late num price;
   @HiveField(5)
-  late String? priceCurrency;
+  late String priceCurrency;
   @HiveField(6,defaultValue: false)
-  late bool? finished;
-  Bill({required this.storeName,this.billDesc,required this.boughtItems,required this.dateTime,required this.price,required this.priceCurrency,this.finished});
+  late bool finished;
+  Bill({required this.storeName,this.billDesc,required this.boughtItems,required this.dateTime,required this.price,required this.priceCurrency,this.finished=false});
 }

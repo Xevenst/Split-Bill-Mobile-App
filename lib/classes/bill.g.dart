@@ -17,13 +17,13 @@ class BillAdapter extends TypeAdapter<Bill> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Bill(
-      storeName: fields[0] == null ? '' : fields[0] as String?,
+      storeName: fields[0] == null ? '' : fields[0] as String,
       billDesc: fields[1] == null ? '' : fields[1] as String?,
       boughtItems: (fields[2] as List).cast<Item>(),
-      dateTime: fields[3] as String?,
-      price: fields[4] as num?,
-      priceCurrency: fields[5] as String?,
-      finished: fields[6] == null ? false : fields[6] as bool?,
+      dateTime: fields[3] as String,
+      price: fields[4] as num,
+      priceCurrency: fields[5] as String,
+      finished: fields[6] == null ? false : fields[6] as bool,
     );
   }
 

@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Widget BillList(String? billName,String? billDesc,String? billTotalPrice,String? billCurrency, bool? billFinished){
+Widget BillList(String billName,String? billDesc,String billTotalPrice,String billCurrency, bool billFinished){
   return Column(
     children: [
       Container(
         child: ListTile(
           leading: const CircleAvatar(child: Text("A+"),),//TODO: Change with name or whatever
-          title: Text(billName??"Title", style: const TextStyle(fontSize: 18),),
+          title: Text(billName, style: const TextStyle(fontSize: 18),),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -20,7 +20,7 @@ Widget BillList(String? billName,String? billDesc,String? billTotalPrice,String?
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Price: ${billTotalPrice??0} ${billCurrency??""}",style: const TextStyle(fontSize: 16)),
+              Text("Price: $billTotalPrice $billCurrency",style: const TextStyle(fontSize: 16)),
               billFinished==true?Text("Finished",style: TextStyle(color:Colors.green.shade400,fontSize: 16)):Text("Not yet finished",style: TextStyle(color:Colors.red.shade400,fontSize: 16)),
             ],
           ),
@@ -29,7 +29,7 @@ Widget BillList(String? billName,String? billDesc,String? billTotalPrice,String?
           },
         ),
       ),
-      const Divider(color: Colors.black38,thickness: 1,height: 5,)
+      const Divider(color: Colors.black38,thickness: 2,height: 5,)
     ],
   );
 }
