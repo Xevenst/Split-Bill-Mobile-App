@@ -10,7 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   hive_flutter: any
+  build_runner: any
   path_provider: any
+  hive_generator: any
+  intl: any
 
 dev_dependencies:
   flutter_test:
