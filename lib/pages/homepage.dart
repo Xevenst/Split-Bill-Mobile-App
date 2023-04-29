@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:splitbill/classes/bill.dart'; //TODO: Remove as this is debug
-import 'package:splitbill/classes/item.dart'; //TODO: Remove as this is debug
-import 'package:path_provider/path_provider.dart';
+import 'package:splitbill/classes/bill.dart';
+import 'package:splitbill/classes/item.dart';
 import 'package:splitbill/pages/addbillpage.dart';
 import 'package:splitbill/lists/billlist.dart';
 import 'package:splitbill/pages/settingspage.dart';
@@ -69,7 +66,6 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: box.length,
             itemBuilder: (context, index) {
-              // return null;
               return BillList(
                   box.get(index)!.storeName,
                   box.get(index)?.billDesc,
@@ -99,7 +95,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   addTemp() async {
-    //TODO: Remove as this is debug
     final box = Hive.box<Bill>('Bill');
     Bill temp = Bill(
       storeName: "Count ${box.length}",
@@ -112,18 +107,12 @@ class _HomePageState extends State<HomePage> {
       priceCurrency: "NTD",
     );
     await box.put(box.length, temp);
-    // print("element added ${await box.get(index).storeName}");
   }
 
   resetTemp() async {
     final box = Hive.box<Bill>('Bill');
-    //TODO: Remove as this is debug
     if (box.length!=0) {
-      print("COUNT NOT 0");
       await Hive.box<Bill>('Bill').clear();
-      print("element deleted");
-    } else {
-      print("No elements to be deleted");
     }
   }
 }
