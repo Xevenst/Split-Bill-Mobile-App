@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/bill.dart';
+import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/item.dart';
 import 'package:splitbill/pages/addbillpage.dart';
 import 'package:splitbill/lists/billlist.dart';
@@ -71,6 +72,7 @@ class _HomePageState extends State<HomePage> {
                   box.get(index)?.billDesc,
                   box.get(index)!.price.toString(),
                   box.get(index)!.priceCurrency,
+                  box.get(index)!.userPaying,
                   box.get(index)!.finished);
             },
           );
@@ -105,6 +107,7 @@ class _HomePageState extends State<HomePage> {
       dateTime: DateTime.now().toString(),
       price: 100,
       priceCurrency: "NTD",
+      userPaying: Contact(contactName: "Xevenst"),
     );
     await box.put(box.length, temp);
   }

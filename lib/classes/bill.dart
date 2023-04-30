@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/item.dart';
 part 'bill.g.dart';
 
@@ -18,7 +19,9 @@ class Bill extends HiveObject{
   late num price;
   @HiveField(5)
   late String priceCurrency;
-  @HiveField(6,defaultValue: false)
+  @HiveField(6)
+  late Contact userPaying;
+  @HiveField(7,defaultValue: false)
   late bool finished;
-  Bill({required this.storeName,this.billDesc,required this.boughtItems,required this.dateTime,required this.price,required this.priceCurrency,this.finished=false});
+  Bill({required this.storeName,this.billDesc,required this.boughtItems,required this.dateTime,required this.price,required this.priceCurrency,required this.userPaying,this.finished=false});
 }

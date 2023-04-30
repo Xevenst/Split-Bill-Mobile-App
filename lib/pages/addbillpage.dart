@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/pages/contactslistpage.dart';
 import 'package:splitbill/pages/storelistpage.dart';
 
@@ -23,17 +25,24 @@ class _AddBillPageState extends State<AddBillPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           // tooltip: 'Go back',
-          color:Colors.white,
-          onPressed: (){Navigator.pop(context);},
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: const Text('Add new bill data'),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_right_alt),
         onPressed: () {
-          if(formKey.currentState!.validate()){
+          if (formKey.currentState!.validate()) {
             formKey.currentState?.save();
-            Navigator.push(context,MaterialPageRoute(builder: (context) => const ContactsList(),));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ContactsList(),
+              ),
+            );
           }
         },
       ),
@@ -51,19 +60,30 @@ class _AddBillPageState extends State<AddBillPage> {
                   suffixIcon: IconButton(
                     icon: Icon(Icons.contacts),
                     onPressed: () async {
-                      Set<String> newValue = await Navigator.push(context,MaterialPageRoute(settings: RouteSettings(name: "ContactsListPage"), builder: (context) => StoreListPage()));
-                      setState(() {
-                        storeController.text = newValue.elementAt(0);
-                        nameController.text = newValue.elementAt(1);
-                      });
+                      await Hive.openBox<Store>('Store');
+                      final box = Hive.box<Store>('Store');
+                      int? newValue = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          settings: RouteSettings(name: "ContactsListPage"),
+                          builder: (context) => StoreListPage(),
+                        ),
+                      );
+                      if (newValue != null) {
+                        setState(
+                          () {
+                            storeController.text = box.get(newValue)!.storeName;
+                            nameController.text = box.get(newValue)!.storeName;
+                          },
+                        );
+                      }
                     },
                   ),
                 ),
-                validator: (value){
-                  if(value!.isEmpty){
+                validator: (value) {
+                  if (value!.isEmpty) {
                     return "Enter correct data";
-                  }
-                  else{
+                  } else {
                     return null;
                   }
                 },
@@ -77,11 +97,10 @@ class _AddBillPageState extends State<AddBillPage> {
                   border: OutlineInputBorder(),
                   labelText: "Name",
                 ),
-                validator: (value){
-                  if(value!.isEmpty){
+                validator: (value) {
+                  if (value!.isEmpty) {
                     return "Enter correct data";
-                  }
-                  else{
+                  } else {
                     return null;
                   }
                 },

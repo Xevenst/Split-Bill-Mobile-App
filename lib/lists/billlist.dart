@@ -2,19 +2,30 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:splitbill/classes/contact.dart';
 
 Widget BillList(String billName, String? billDesc, String billTotalPrice,
-    String billCurrency, bool billFinished) {
+    String billCurrency, Contact billUserPaying, bool billFinished) {//TODO: CHANGE LISTTILE WITH CARD FOR BETTER UI TODO://
   return Column(
     children: [
       Container(
         child: ListTile(
-          leading: const CircleAvatar(
-            child: Text("A+"),
+          leading: CircleAvatar(
+            child: Text(billName[0]),
           ), //TODO: Change with name or whatever
-          title: Text(
-            billName,
-            style: const TextStyle(fontSize: 18),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                billName,
+                style: const TextStyle(fontSize: 18),
+              ),
+              Text(
+                "Paying: ${billUserPaying.contactName}",
+                style: const TextStyle(color: Colors.black54, fontSize: 14),
+              ),
+            ],
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,10 +35,9 @@ Widget BillList(String billName, String? billDesc, String billTotalPrice,
                 style: const TextStyle(fontSize: 14),
               ),
               Text(
-                  "Created: ${DateFormat('E, d MMM yyyy HH:mm a').format(DateTime.now()).toString()}",
-                  style: const TextStyle(
-                      fontSize:
-                          12)) //TODO: Change this to string as we will take datettime from Billdata
+                "Created: ${DateFormat('E, d MMM yyyy HH:mm a').format(DateTime.now()).toString()}",
+                style: const TextStyle(fontSize: 12),
+              ), //TODO: Change this to string as we will take datettime from Billdata
             ],
           ),
           trailing: Column(
@@ -44,9 +54,7 @@ Widget BillList(String billName, String? billDesc, String billTotalPrice,
                           TextStyle(color: Colors.red.shade400, fontSize: 16)),
             ],
           ),
-          onTap: () {
-            
-          },
+          onTap: () {},
         ),
       ),
       const Divider(

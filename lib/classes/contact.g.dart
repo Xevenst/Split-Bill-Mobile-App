@@ -19,7 +19,7 @@ class ContactAdapter extends TypeAdapter<Contact> {
     return Contact(
       contactName: fields[0] as String,
       contactImage: fields[1] as String?,
-      contactDebt: fields[2] as num?,
+      contactDebt: fields[2] == null ? 0 : fields[2] as num?,
     );
   }
 

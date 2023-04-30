@@ -7,8 +7,8 @@ class Contact{
   late String contactName;
   @HiveField(1)
   late String? contactImage;
-  @HiveField(2)
+  @HiveField(2,defaultValue: 0)
   late num? contactDebt;
 
-  Contact({required this.contactName,this.contactImage,this.contactDebt});
+  Contact({required this.contactName,this.contactImage,this.contactDebt=0});
 }
