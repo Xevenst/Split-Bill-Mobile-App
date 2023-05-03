@@ -38,19 +38,19 @@ class _StoreListPageState extends State<StoreListPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop({"hello", "hi"});
+            Navigator.of(context).pop(); //
           },
         ),
         actions: [
           IconButton(
             onPressed: () {
-              addContact();
+              addStore();
             },
             icon: Icon(Icons.abc),
           ),
           IconButton(
             onPressed: () {
-              resetContact();
+              resetStore();
             },
             icon: Icon(Icons.delete),
           ),
@@ -62,7 +62,7 @@ class _StoreListPageState extends State<StoreListPage> {
           return ListView.builder(
             itemCount: box.length,
             itemBuilder: (context, index) {
-              return GestureDetector(
+              return InkWell(
                 onTap: () {
                   Navigator.pop(context, index);
                 },
@@ -86,16 +86,15 @@ class _StoreListPageState extends State<StoreListPage> {
     );
   }
 
-  addContact() async {
+  addStore() async {
     final storeBox = Hive.box<Store>('Store');
     Store temp = Store(
       storeName: "Xevenst ${storeBox.length}",
     );
     await storeBox.put(storeBox.length, temp);
-    print("Element added");
   }
 
-  resetContact() async {
+  resetStore() async {
     final storeBox = Hive.box<Store>('Store');
     if (storeBox.length != 0) {
       await Hive.box<Store>('Store').clear();

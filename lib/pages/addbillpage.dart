@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/pages/contactslistpage.dart';
 import 'package:splitbill/pages/storelistpage.dart';
@@ -34,7 +35,8 @@ class _AddBillPageState extends State<AddBillPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.arrow_right_alt),
-        onPressed: () {
+        onPressed: () async {
+          await Hive.openBox<Contact>('Contact');
           if (formKey.currentState!.validate()) {
             formKey.currentState?.save();
             Navigator.push(

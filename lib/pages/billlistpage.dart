@@ -7,13 +7,13 @@ import 'package:splitbill/pages/addbillpage.dart';
 import 'package:splitbill/lists/billlist.dart';
 import 'package:splitbill/pages/settingspage.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class BillListPage extends StatefulWidget {
+  const BillListPage({super.key});
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<BillListPage> createState() => _BillListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BillListPageState extends State<BillListPage> {
   late Box billBox;
 
   @override
