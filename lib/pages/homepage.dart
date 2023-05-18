@@ -1,19 +1,24 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/bill.dart';
 import 'package:splitbill/classes/contact.dart';
-import 'package:splitbill/classes/item.dart';
-import 'package:splitbill/pages/addbillpage.dart';
 import 'package:splitbill/lists/billlist.dart';
 import 'package:splitbill/pages/settingspage.dart';
+import 'package:splitbill/pages/storelistpage.dart';
 
-class BillListPage extends StatefulWidget {
-  const BillListPage({super.key});
+import '../classes/store.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
   @override
-  State<BillListPage> createState() => _BillListPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _BillListPageState extends State<BillListPage> {
+class _HomePageState extends State<HomePage> {
   late Box billBox;
 
   @override
@@ -48,13 +53,13 @@ class _BillListPageState extends State<BillListPage> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.abc),
+            icon: const Icon(Icons.abc),
             onPressed: () {
               addTemp();
             },
           ),
           IconButton(
-            icon: Icon(Icons.alarm),
+            icon: const Icon(Icons.alarm),
             onPressed: () {
               resetTemp();
             },
@@ -79,12 +84,13 @@ class _BillListPageState extends State<BillListPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          await Hive.openBox<Store>('Store');
           Navigator.push(
               context,
               MaterialPageRoute(
-                settings: const RouteSettings(name: "AddBillPage"),
-                builder: (context) => AddBillPage(),
+                settings: const RouteSettings(name: "StoreListPage"),
+                builder: (context) => const StoreListPage(),
               )).then(onPop);
         },
         child: const Icon(Icons.add),
@@ -102,12 +108,13 @@ class _BillListPageState extends State<BillListPage> {
       storeName: "Count ${box.length}",
       billDesc: "Desc ${box.length}",
       boughtItems: [
-        Item(itemName: "A", itemDesc: "", itemCurrency: "NTD", itemPrice: 100)
+        // Item(itemName: "A", itemDesc: "", itemCurrency: "", itemPrice: Random().nextInt(10000))
       ],
       dateTime: DateTime.now().toString(),
-      price: 100,
+      price: Random().nextInt(10000),
       priceCurrency: "NTD",
       userPaying: Contact(contactName: "Xevenst"),
+      finished: Random().nextInt(10000)%2==0?false:true,
     );
     await box.put(box.length, temp);
   }

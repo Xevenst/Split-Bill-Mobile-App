@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/lists/contactlist.dart';
-import 'package:splitbill/pages/confirmationpage.dart';
+import 'package:splitbill/pages/assignsplitpage.dart';
 
 import 'addcontactpage.dart';
 
@@ -30,28 +30,22 @@ class _ContactsListState extends State<ContactsList> {
 
   bool contactSelected = false;
   bool searchSelected = false;
-  bool deleteContactSelected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Visibility(
-          visible: (!searchSelected || deleteContactSelected),
-          child: deleteContactSelected == false
-              ? Text('Choose contact')
-              : Text('Delete contact'),
+          visible: !searchSelected,
+          child: const Text('Choose contact'),
         ),
         leading: IconButton(
-          icon: (deleteContactSelected == false && searchSelected == false)
-              ? Icon(Icons.arrow_back)
-              : Icon(Icons.cancel),
+          icon: searchSelected ? const Icon(Icons.arrow_back) : const Icon(Icons.cancel),
           // tooltip: 'Go back',
           color: Colors.white,
           onPressed: () {
-            if (deleteContactSelected == false && searchSelected == false) {
+            if (searchSelected == false) {
               Navigator.of(context).pop();
             } else {
-              deleteContactSelected = false;
               searchSelected = false;
             }
             setState(() {});
@@ -59,20 +53,11 @@ class _ContactsListState extends State<ContactsList> {
         ),
         actions: [
           Visibility(
-              visible: (!searchSelected && !deleteContactSelected),
-              child: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  searchSelected = true;
-                  setState(() {});
-                },
-              )),
-          Visibility(
-            visible: !deleteContactSelected,
+            visible: !searchSelected,
             child: IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.search),
               onPressed: () {
-                deleteContactSelected = true;
+                searchSelected = true;
                 setState(() {});
               },
             ),
@@ -81,18 +66,18 @@ class _ContactsListState extends State<ContactsList> {
             onPressed: () {
               addContact();
             },
-            icon: Icon(Icons.abc),
+            icon: const Icon(Icons.abc),
           ),
           IconButton(
             onPressed: () {
               resetContact();
             },
-            icon: Icon(Icons.restore),
+            icon: const Icon(Icons.restore),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: contactSelected == false ? Icon(Icons.add) : Icon(Icons.check),
+        child: contactSelected == false ? const Icon(Icons.add) : const Icon(Icons.check),
         onPressed: () {
           if (contactSelected == false) {
             Navigator.push(
@@ -107,12 +92,11 @@ class _ContactsListState extends State<ContactsList> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    settings: const RouteSettings(name: "ConfirmationPage"),
-                    builder: (context) => const ConfirmationPage()));
+                    settings: const RouteSettings(name: "AssignSplitPage"),
+                    builder: (context) => const AssignSplitPage()));
           }
           contactSelected = false;
           searchSelected = false;
-          deleteContactSelected = false;
           setState(() {});
         },
       ),
@@ -122,7 +106,9 @@ class _ContactsListState extends State<ContactsList> {
           return ListView.builder(
             itemCount: box.length,
             itemBuilder: (context, index) {
-              return InkWell(onTap: () {}, child: ContactList("Xevenst ${contactBox.length}"));
+              return InkWell(
+                  onTap: () {},
+                  child: ContactList("Xevenst ${contactBox.length}"));
             },
           );
         },

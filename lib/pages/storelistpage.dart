@@ -1,8 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/item.dart';
 import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/lists/storelist.dart';
+
+import 'addstorepage.dart';
 
 class StoreListPage extends StatefulWidget {
   const StoreListPage({super.key});
@@ -25,16 +31,12 @@ class _StoreListPageState extends State<StoreListPage> {
     super.dispose();
     storeBox.close();
   }
-  bool searchSelected = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Visibility(
-          visible: !searchSelected,
-          child: const Text('Store List'),
-        ),
+        title: const Text('Store List'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -56,6 +58,19 @@ class _StoreListPageState extends State<StoreListPage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Hive.openBox<Store>('Store');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              settings: const RouteSettings(name: "AddStorePage"),
+              builder: (context) => AddStorePage(),
+            ),
+          ).then(onPop);
+        },
+        child: const Icon(Icons.add),
+      ),
       body: ValueListenableBuilder(
         valueListenable: Hive.box<Store>('Store').listenable(),
         builder: (context, box, child) {
@@ -67,16 +82,13 @@ class _StoreListPageState extends State<StoreListPage> {
                   Navigator.pop(context, index);
                 },
                 child: StoreList(
-                  "Wok",
-                  "Wok Noodle",
-                  "00.00 - 14.00",
-                  [
-                    Item(
-                        itemName: "Item",
-                        itemDesc: "ItemDesc",
-                        itemPrice: 10,
-                        itemCurrency: "NTD")
-                  ],
+                  context,
+                  box.getAt(index)!.storeName,
+                  box.getAt(index)?.storeDesc,
+                  box.getAt(index)?.storeOpenTime,
+                  box.getAt(index)?.storeItems,
+                  box,
+                  index,
                 ),
               );
             },
@@ -85,19 +97,33 @@ class _StoreListPageState extends State<StoreListPage> {
       ),
     );
   }
+  void onPop(dynamic value)async{
+    await Hive.openBox<Store>('Store');
+    setState(() {
+      
+    });
+  }
 
   addStore() async {
+    await Hive.openBox<Store>('Store');
     final storeBox = Hive.box<Store>('Store');
     Store temp = Store(
       storeName: "Xevenst ${storeBox.length}",
     );
     await storeBox.put(storeBox.length, temp);
+    setState(() {
+      
+    });
   }
 
   resetStore() async {
+    await Hive.openBox<Store>('Store');
     final storeBox = Hive.box<Store>('Store');
     if (storeBox.length != 0) {
       await Hive.box<Store>('Store').clear();
     }
+    setState(() {
+      
+    });
   }
 }

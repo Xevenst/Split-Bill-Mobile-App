@@ -20,7 +20,7 @@ class ItemAdapter extends TypeAdapter<Item> {
       itemName: fields[0] as String,
       itemDesc: fields[1] as String?,
       itemPrice: fields[2] as num,
-      itemCurrency: fields[3] as String,
+      itemCurrency: fields[3] as Currency,
     );
   }
 

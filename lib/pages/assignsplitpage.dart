@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ConfirmationPage extends StatefulWidget {
-  const ConfirmationPage({super.key});
+class AssignSplitPage extends StatefulWidget {
+  const AssignSplitPage({super.key});
 
   @override
-  State<ConfirmationPage> createState() => _ConfirmationPageState();
+  State<AssignSplitPage> createState() => _AssignSplitPageState();
 }
 
-class _ConfirmationPageState extends State<ConfirmationPage> {
+class _AssignSplitPageState extends State<AssignSplitPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,11 +16,11 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back)),
-        title: Text('Confirmation'),
+            icon: const Icon(Icons.arrow_back)),
+        title: const Text('Confirmation'),
         actions: [],
       ),
-      body: Column(
+      body: const Column(
         children: [],
       ),
       floatingActionButton: FloatingActionButton(
@@ -28,7 +28,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
           Navigator.popUntil(context, (route) => route.isFirst);
           setState(() {});
         },
-        child: Icon(Icons.check),
+        child: const Icon(Icons.check),
       ),
     );
   }

@@ -12,7 +12,7 @@ Widget BillList(String billName, String? billDesc, String billTotalPrice,
         child: ListTile(
           leading: CircleAvatar(
             child: Text(billName[0]),
-          ), //TODO: Change with name or whatever
+          ), //TODO: Change with name or image provided from user (optional)
           title: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

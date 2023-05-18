@@ -7,7 +7,7 @@ import 'package:splitbill/classes/bill.dart';
 import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/item.dart';
 import 'package:splitbill/classes/store.dart';
-import 'package:splitbill/pages/billlistpage.dart';
+import 'package:splitbill/pages/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +34,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
-          child: BillListPage(),
+          child: HomePage(),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 part 'item.g.dart';
 
@@ -10,7 +11,7 @@ class Item{
   @HiveField(2)
   late num itemPrice;
   @HiveField(3)
-  late String itemCurrency;
+  late Currency itemCurrency;
 
   Item({required this.itemName,this.itemDesc,required this.itemPrice,required this.itemCurrency});
 }
