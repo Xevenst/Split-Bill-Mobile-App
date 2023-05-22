@@ -7,7 +7,7 @@ import 'package:splitbill/classes/item.dart';
 import '../classes/store.dart';
 
 Widget StoreList(BuildContext context, String storeName, String? storeDesc,
-    String? storeOpenTime, List<Item>? storeItems, Box box,int index) {//TODO: CHANGE ALL STRING WITH BOX . GETSTRING
+    String? storeOpenTime, List<Item>? storeItems, Box box,StateSetter setState){//TODO: CHANGE ALL STRING WITH BOX . GETSTRING
   return Column(
     children: [
       ListTile(
@@ -33,6 +33,9 @@ Widget StoreList(BuildContext context, String storeName, String? storeDesc,
               ),
               IconButton(
                 onPressed: () async {
+                  box = await Hive.openBox<Store>('Store');
+                  box.delete(storeName);
+                  setState((){});
                 },
                 icon: const Icon(Icons.delete),
               ),

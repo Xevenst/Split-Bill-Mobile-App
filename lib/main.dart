@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:splitbill/classes/bill.dart';
 import 'package:splitbill/classes/contact.dart';
+import 'package:splitbill/classes/currency.g.dart';
 import 'package:splitbill/classes/item.dart';
 import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/pages/homepage.dart';
@@ -18,6 +19,7 @@ void main() async {
   Hive.registerAdapter(StoreAdapter());
   Hive.registerAdapter(ItemAdapter());
   Hive.registerAdapter(ContactAdapter());
+  Hive.registerAdapter(CurrencyAdapter());
   await Hive.openBox<Bill>('Bill');
   await Hive.openBox<Store>("Store");
   await Hive.openBox<Item>("Item");

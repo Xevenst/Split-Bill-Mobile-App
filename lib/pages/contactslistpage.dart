@@ -6,14 +6,14 @@ import 'package:splitbill/pages/assignsplitpage.dart';
 
 import 'addcontactpage.dart';
 
-class ContactsList extends StatefulWidget {
-  const ContactsList({super.key});
+class ContactsListPage extends StatefulWidget {
+  const ContactsListPage({super.key});
 
   @override
-  State<ContactsList> createState() => _ContactsListState();
+  State<ContactsListPage> createState() => _ContactsListPageState();
 }
 
-class _ContactsListState extends State<ContactsList> {
+class _ContactsListPageState extends State<ContactsListPage> {
   late Box contactBox;
 
   @override

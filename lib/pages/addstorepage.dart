@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/lists/itemlist.dart';
-import 'package:splitbill/pages/contactslistpage.dart';
-import 'package:splitbill/pages/storelistpage.dart';
 
 import '../classes/item.dart';
 import 'additempage.dart';
@@ -24,12 +23,14 @@ class _AddStorePageState extends State<AddStorePage> {
   final TextEditingController desController = TextEditingController();
   late List<Item> itemList = [];
   late Box storeBox;
+  late Currency currencySelected;
 
   @override
   void initState() {
     super.initState();
     storeBox = Hive.box<Store>('Store');
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -38,6 +39,7 @@ class _AddStorePageState extends State<AddStorePage> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController curController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -54,11 +56,17 @@ class _AddStorePageState extends State<AddStorePage> {
         child: Icon(Icons.check),
         onPressed: () async {
           if (formKey.currentState!.validate()) {
+            storeBox = await Hive.openBox<Store>('Store');
             formKey.currentState?.save();
-            Store newStore = Store(storeName: storeController.text, storeDesc: desController.text, storeItems: itemList);
-            storeBox.put(storeController.text,newStore);
+            Store newStore = Store(
+                storeName: storeController.text,
+                storeDesc: desController.text,
+                storeItems: itemList,
+                storeCurrency: currencySelected,
+            );
+            storeBox.put(storeController.text, newStore);
             Navigator.pop(context);
-            await Hive.openBox<Store>('Store');
+            setState(() {});
           }
         },
       ),
@@ -96,7 +104,11 @@ class _AddStorePageState extends State<AddStorePage> {
               ),
               Center(
                 // padding: const EdgeInsets.all(5),
-                child: Text(itemList.isEmpty?'Item list is empty, add item by using the plus button below':itemList.length>1?'Items:':'Item:'),
+                child: Text(itemList.isEmpty
+                    ? 'Item list is empty, add item by using the plus button below'
+                    : itemList.length > 1
+                        ? 'Items:'
+                        : 'Item:'),
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -106,10 +118,43 @@ class _AddStorePageState extends State<AddStorePage> {
                   itemCount: itemList.length,
                   itemBuilder: (context, index) {
                     return ItemList(
-                        itemList[index].itemName,
-                        itemList[index].itemDesc,
-                        itemList[index].itemPrice,
-                        itemList[index].itemCurrency);
+                      itemList[index].itemName,
+                      itemList[index].itemDesc,
+                      itemList[index].itemPrice,
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: TextFormField(
+                  controller: curController,
+                  keyboardType: TextInputType.none,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Currency",
+                  ),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp("[]")),
+                  ],
+                  onTap: () {
+                    showCurrencyPicker(
+                      context: context,
+                      showFlag: true,
+                      showCurrencyName: true,
+                      showCurrencyCode: true,
+                      onSelect: (Currency currency) {
+                        curController.text = currency.symbol;
+                        currencySelected = currency;
+                      },
+                    );
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please choose a currency!";
+                    } else {
+                      return null;
+                    }
                   },
                 ),
               ),
@@ -126,7 +171,7 @@ class _AddStorePageState extends State<AddStorePage> {
                       ),
                     );
                     setState(() {
-                      if(newItem!=null){
+                      if (newItem != null) {
                         itemList.add(newItem);
                       }
                     });

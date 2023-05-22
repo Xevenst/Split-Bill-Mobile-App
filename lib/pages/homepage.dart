@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                   box.get(index)!.storeName,
                   box.get(index)?.billDesc,
                   box.get(index)!.price.toString(),
-                  box.get(index)!.priceCurrency,
+                  box.get(index)!.priceCurrency.code,
                   box.get(index)!.userPaying,
                   box.get(index)!.finished);
             },
@@ -104,19 +104,19 @@ class _HomePageState extends State<HomePage> {
 
   addTemp() async {
     final box = Hive.box<Bill>('Bill');
-    Bill temp = Bill(
-      storeName: "Count ${box.length}",
-      billDesc: "Desc ${box.length}",
-      boughtItems: [
-        // Item(itemName: "A", itemDesc: "", itemCurrency: "", itemPrice: Random().nextInt(10000))
-      ],
-      dateTime: DateTime.now().toString(),
-      price: Random().nextInt(10000),
-      priceCurrency: "NTD",
-      userPaying: Contact(contactName: "Xevenst"),
-      finished: Random().nextInt(10000)%2==0?false:true,
-    );
-    await box.put(box.length, temp);
+    // Bill temp = Bill(
+    //   storeName: "Count ${box.length}",
+    //   billDesc: "Desc ${box.length}",
+    //   boughtItems: [
+    //     // Item(itemName: "A", itemDesc: "", itemCurrency: "", itemPrice: Random().nextInt(10000))
+    //   ],
+    //   dateTime: DateTime.now().toString(),
+    //   price: Random().nextInt(10000),
+    //   // priceCurrency: "NTD",
+    //   userPaying: Contact(contactName: "Xevenst"),
+    //   finished: Random().nextInt(10000)%2==0?false:true,
+    // );
+    // await box.put(box.length, temp);
   }
 
   resetTemp() async {

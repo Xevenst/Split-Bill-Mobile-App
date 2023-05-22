@@ -1,10 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
-
-import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 
 Widget ItemList(
-    String name, String? description, num itemPrice, Currency currency) {
+    String name, String? description, num itemPrice) {
   return Column(
     children: [
       ListTile(
@@ -15,7 +13,7 @@ Widget ItemList(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-                '${itemPrice.toString().replaceAll(RegExp(r'.0'), '')} ${currency.symbol}'),
+                itemPrice.toString().replaceAll(RegExp(r'.0'), '')),
             const SizedBox(
               width: 20,
             ),

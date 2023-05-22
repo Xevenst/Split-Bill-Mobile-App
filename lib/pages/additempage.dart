@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../classes/item.dart';
-import '../classes/store.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({super.key});
@@ -18,9 +15,7 @@ class _AddItemPageState extends State<AddItemPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController desController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController curController = TextEditingController();
 
-  late Currency currencySelected;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +27,7 @@ class _AddItemPageState extends State<AddItemPage> {
           if (formKey.currentState!.validate()){
             formKey.currentState?.save();
             //TODO: Save to list on previous page (addstorepage/additempage)
-            Item newItem = Item(itemName: nameController.text,itemDesc: nameController.text,itemPrice: double.parse(priceController.text),itemCurrency: currencySelected);
+            Item newItem = Item(itemName: nameController.text,itemDesc: nameController.text,itemPrice: double.parse(priceController.text));
             Navigator.pop(context,newItem);
           }
         },
@@ -84,39 +79,6 @@ class _AddItemPageState extends State<AddItemPage> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Please enter price!";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: TextFormField(
-                controller: curController,
-                keyboardType: TextInputType.none,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Currency",
-                ),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp("[]")),
-                ],
-                onTap: () {
-                  showCurrencyPicker(
-                    context: context,
-                    showFlag: true,
-                    showCurrencyName: true,
-                    showCurrencyCode: true,
-                    onSelect: (Currency currency) {
-                      curController.text = currency.symbol;
-                      currencySelected = currency;
-                    },
-                  );
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Please choose a currency!";
                   } else {
                     return null;
                   }

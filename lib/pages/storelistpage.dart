@@ -2,11 +2,12 @@
 
 import 'dart:ffi';
 
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:splitbill/classes/item.dart';
 import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/lists/storelist.dart';
+import 'package:splitbill/pages/contactslistpage.dart';
 
 import 'addstorepage.dart';
 
@@ -32,13 +33,14 @@ class _StoreListPageState extends State<StoreListPage> {
     storeBox.close();
   }
 
+  Currency? currencyTempDebug;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Store List'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop(); //
           },
@@ -48,13 +50,13 @@ class _StoreListPageState extends State<StoreListPage> {
             onPressed: () {
               addStore();
             },
-            icon: Icon(Icons.abc),
+            icon: const Icon(Icons.abc),
           ),
           IconButton(
             onPressed: () {
               resetStore();
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
         ],
       ),
@@ -79,17 +81,22 @@ class _StoreListPageState extends State<StoreListPage> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  Navigator.pop(context, index);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      settings: RouteSettings(name: "ContactListPage"),
+                      builder: (context) => ContactsListPage(),
+                    ),
+                  );
                 },
                 child: StoreList(
-                  context,
-                  box.getAt(index)!.storeName,
-                  box.getAt(index)?.storeDesc,
-                  box.getAt(index)?.storeOpenTime,
-                  box.getAt(index)?.storeItems,
-                  box,
-                  index,
-                ),
+                    context,
+                    box.getAt(index)!.storeName,
+                    box.getAt(index)?.storeDesc,
+                    box.getAt(index)?.storeOpenTime,
+                    box.getAt(index)?.storeItems,
+                    box,
+                    setState),
               );
             },
           );
@@ -97,23 +104,33 @@ class _StoreListPageState extends State<StoreListPage> {
       ),
     );
   }
-  void onPop(dynamic value)async{
+
+  void onPop(dynamic value) async {
     await Hive.openBox<Store>('Store');
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   addStore() async {
     await Hive.openBox<Store>('Store');
-    final storeBox = Hive.box<Store>('Store');
-    Store temp = Store(
-      storeName: "Xevenst ${storeBox.length}",
+    showCurrencyPicker(
+      context: context,
+      showFlag: true,
+      showSearchField: true,
+      showCurrencyName: true,
+      showCurrencyCode: true,
+      onSelect: (Currency currency) {
+        print('Select currency: ${currency.name}');
+
+      },
+      favorite: ['USD'],
     );
-    await storeBox.put(storeBox.length, temp);
-    setState(() {
-      
-    });
+    final storeBox = Hive.box<Store>('Store');
+    // Store temp = Store(
+    //   storeName: "Xevenst ${storeBox.length}",
+    //   storeItems: [],
+    // );
+    // await storeBox.put("Xevenst ${storeBox.length}", temp);
+    setState(() {});
   }
 
   resetStore() async {
@@ -122,8 +139,6 @@ class _StoreListPageState extends State<StoreListPage> {
     if (storeBox.length != 0) {
       await Hive.box<Store>('Store').clear();
     }
-    setState(() {
-      
-    });
+    setState(() {});
   }
 }

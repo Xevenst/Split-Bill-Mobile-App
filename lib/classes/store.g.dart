@@ -21,13 +21,14 @@ class StoreAdapter extends TypeAdapter<Store> {
       storeDesc: fields[1] as String?,
       storeOpenTime: fields[2] as String?,
       storeItems: (fields[3] as List?)?.cast<Item>(),
+      storeCurrency: fields[4] as Currency,
     );
   }
 
   @override
   void write(BinaryWriter writer, Store obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.storeName)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class StoreAdapter extends TypeAdapter<Store> {
       ..writeByte(2)
       ..write(obj.storeOpenTime)
       ..writeByte(3)
-      ..write(obj.storeItems);
+      ..write(obj.storeItems)
+      ..writeByte(4)
+      ..write(obj.storeCurrency);
   }
 
   @override
