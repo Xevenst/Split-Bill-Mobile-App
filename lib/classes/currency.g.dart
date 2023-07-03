@@ -12,17 +12,18 @@ class CurrencyAdapter extends TypeAdapter<Currency> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Currency(
-        code: fields[0] as String,
-        name: fields[1] as String,
-        symbol: fields[2] as String,
-        flag: fields[3] as String,
+        code: fields[0] == null ? '' : fields[0] as String,
+        name: fields[1] == null ? '' : fields[1] as String,
+        symbol: fields[2] == null ? '' : fields[2] as String,
+        flag: fields[3] == null ? '' : fields[3] as String,
         number: fields[4] as int,
-        decimalDigits: fields[5] as int,
-        namePlural: fields[6] as String,
-        symbolOnLeft: fields[7] as bool,
-        decimalSeparator: fields[8] as String,
-        thousandsSeparator: fields[9] as String,
-        spaceBetweenAmountAndSymbol: fields[10] as bool);
+        decimalDigits: fields[5] == null ? 0 : fields[5] as int,
+        namePlural: fields[6] == null ? '' : fields[6] as String,
+        symbolOnLeft: fields[7] == null ? false : fields[7] as bool,
+        decimalSeparator: fields[8] == null ? '' : fields[8] as String,
+        thousandsSeparator: fields[9] == null ? '' : fields[9] as String,
+        spaceBetweenAmountAndSymbol:
+            fields[10] == null ? false : fields[10] as bool);
   }
 
   @override

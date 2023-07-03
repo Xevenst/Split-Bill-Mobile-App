@@ -10,6 +10,10 @@ class ViewBillPage extends StatefulWidget {
 class _ViewBillPageState extends State<ViewBillPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('View Bill'),
+      ),
+    );
   }
 }

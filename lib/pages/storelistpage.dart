@@ -9,6 +9,7 @@ import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/lists/storelist.dart';
 import 'package:splitbill/pages/contactslistpage.dart';
 
+import '../classes/contact.dart';
 import 'addstorepage.dart';
 
 class StoreListPage extends StatefulWidget {
@@ -42,7 +43,7 @@ class _StoreListPageState extends State<StoreListPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop(); //
+            Navigator.of(context).pop();
           },
         ),
         actions: [
@@ -67,7 +68,7 @@ class _StoreListPageState extends State<StoreListPage> {
             context,
             MaterialPageRoute(
               settings: const RouteSettings(name: "AddStorePage"),
-              builder: (context) => AddStorePage(),
+              builder: (context) => AddStorePage(editMode: false),
             ),
           ).then(onPop);
         },
@@ -80,12 +81,13 @@ class _StoreListPageState extends State<StoreListPage> {
             itemCount: box.length,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {
+                onTap: () async {
+                  await Hive.openBox<Contact>('Contact');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      settings: RouteSettings(name: "ContactListPage"),
-                      builder: (context) => ContactsListPage(),
+                      settings: const RouteSettings(name: "ContactListPage"),
+                      builder: (context) => ContactsListPage(storeIndex: index,),
                     ),
                   );
                 },
@@ -95,6 +97,7 @@ class _StoreListPageState extends State<StoreListPage> {
                     box.getAt(index)?.storeDesc,
                     box.getAt(index)?.storeOpenTime,
                     box.getAt(index)?.storeItems,
+                    box.getAt(index)!.storeCurrency,
                     box,
                     setState),
               );

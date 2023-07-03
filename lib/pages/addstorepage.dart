@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, must_be_immutable
 
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,10 @@ import '../classes/item.dart';
 import 'additempage.dart';
 
 class AddStorePage extends StatefulWidget {
-  const AddStorePage({super.key});
+  AddStorePage({super.key,required this.editMode,this.boxName,this.boxCurrency});
+  bool editMode;
+  String? boxName;
+  String? boxCurrency;
 
   @override
   State<AddStorePage> createState() => _AddStorePageState();
@@ -21,14 +24,20 @@ class _AddStorePageState extends State<AddStorePage> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController storeController = TextEditingController();
   final TextEditingController desController = TextEditingController();
+  final TextEditingController curController = TextEditingController();
   late List<Item> itemList = [];
   late Box storeBox;
-  late Currency currencySelected;
-
+  late String currencySelected;
+  
   @override
   void initState() {
     super.initState();
     storeBox = Hive.box<Store>('Store');
+    if(widget.editMode==true){
+      storeController.text = widget.boxName!;
+      curController.text = widget.boxCurrency!;
+      currencySelected = widget.boxCurrency!;
+    }
   }
 
   @override
@@ -39,7 +48,6 @@ class _AddStorePageState extends State<AddStorePage> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController curController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -79,6 +87,7 @@ class _AddStorePageState extends State<AddStorePage> {
                 padding: const EdgeInsets.all(20),
                 child: TextFormField(
                   controller: storeController,
+                  readOnly: widget.editMode,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Store Name",
@@ -134,9 +143,8 @@ class _AddStorePageState extends State<AddStorePage> {
                     border: OutlineInputBorder(),
                     labelText: "Currency",
                   ),
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp("[]")),
-                  ],
+                  readOnly: true,
+                  enabled: !widget.editMode,
                   onTap: () {
                     showCurrencyPicker(
                       context: context,
@@ -145,7 +153,7 @@ class _AddStorePageState extends State<AddStorePage> {
                       showCurrencyCode: true,
                       onSelect: (Currency currency) {
                         curController.text = currency.symbol;
-                        currencySelected = currency;
+                        currencySelected = currency.name;
                       },
                     );
                   },

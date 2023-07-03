@@ -1,10 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../classes/contact.dart';
 
 class AddContactPage extends StatefulWidget {
-  const AddContactPage({super.key});
+  AddContactPage({super.key,this.boxKey});
+  late String? boxKey;
 
   @override
   State<AddContactPage> createState() => _AddContactPageState();
@@ -14,6 +18,15 @@ class _AddContactPageState extends State<AddContactPage> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController desController = TextEditingController();
+  late Box contactBox;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    contactBox = Hive.box<Contact>('Contact');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +35,11 @@ class _AddContactPageState extends State<AddContactPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: (){
-          if(formKey.currentState!.validate()){
+        onPressed: () {
+          if (formKey.currentState!.validate()) {
             formKey.currentState?.save();
             Navigator.pop(context);
-            setState(() {
-              
-            });
+            setState(() {});
           }
         },
       ),
@@ -47,11 +58,10 @@ class _AddContactPageState extends State<AddContactPage> {
                   border: OutlineInputBorder(),
                   labelText: "Name",
                 ),
-                validator: (value){
-                  if(value!.isEmpty){
+                validator: (value) {
+                  if (value!.isEmpty) {
                     return "Please enter name";
-                  }
-                  else{
+                  } else {
                     return null;
                   }
                 },
@@ -70,9 +80,17 @@ class _AddContactPageState extends State<AddContactPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Text('Current Debt: ${widget.boxKey!=null?contactBox.get(widget.boxKey)!.contactDebt:0}'),
+                ],
+              ),
+            ),
           ],
           //TODO: Add Image Picker and Description(?) for customization
-        ), 
+        ),
       ),
     );
   }

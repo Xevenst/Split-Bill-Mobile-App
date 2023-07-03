@@ -1,14 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/lists/contactlist.dart';
 import 'package:splitbill/pages/assignsplitpage.dart';
 
+import '../classes/store.dart';
 import 'addcontactpage.dart';
 
 class ContactsListPage extends StatefulWidget {
-  const ContactsListPage({super.key});
-
+  const ContactsListPage({super.key, required this.storeIndex});
+  final int storeIndex;
   @override
   State<ContactsListPage> createState() => _ContactsListPageState();
 }
@@ -21,15 +24,12 @@ class _ContactsListPageState extends State<ContactsListPage> {
     super.initState();
     contactBox = Hive.box<Contact>('Contact');
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    contactBox.close();
-  }
-
+  
   bool contactSelected = false;
   bool searchSelected = false;
+  late int selectCounter = 0;
+  late List<int> contactSelectedIndex = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +39,18 @@ class _ContactsListPageState extends State<ContactsListPage> {
           child: const Text('Choose contact'),
         ),
         leading: IconButton(
-          icon: searchSelected ? const Icon(Icons.arrow_back) : const Icon(Icons.cancel),
+          icon: !contactSelected
+              ? const Icon(Icons.arrow_back)
+              : const Icon(Icons.cancel),
           // tooltip: 'Go back',
           color: Colors.white,
           onPressed: () {
-            if (searchSelected == false) {
+            if (contactSelected == false) {
               Navigator.of(context).pop();
             } else {
-              searchSelected = false;
+              contactSelected = false;
+              contactSelectedIndex.clear();
+              selectCounter = contactSelectedIndex.length;
             }
             setState(() {});
           },
@@ -76,24 +80,35 @@ class _ContactsListPageState extends State<ContactsListPage> {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       floatingActionButton: FloatingActionButton(
-        child: contactSelected == false ? const Icon(Icons.add) : const Icon(Icons.check),
-        onPressed: () {
+        child: contactSelected == false
+            ? const Icon(Icons.add)
+            : const Icon(Icons.check),
+        onPressed: () async {
           if (contactSelected == false) {
             Navigator.push(
               context,
               MaterialPageRoute(
                 settings: const RouteSettings(name: "AddContactPage"),
-                builder: (context) => const AddContactPage(),
+                builder: (context) => AddContactPage(),
               ),
             );
+            await Hive.openBox<Contact>('Contact');
           } else {
-            // Navigator.popUntil(context, (route) => route.isFirst);
+            await Hive.openBox<Store>('Store');
+            await Hive.openBox<Contact>('Contact');
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    settings: const RouteSettings(name: "AssignSplitPage"),
-                    builder: (context) => const AssignSplitPage()));
+              context,
+              MaterialPageRoute(
+                settings: const RouteSettings(name: "AssignSplitPage"),
+                builder: (context) => AssignSplitPage(
+                  storeIndex: widget.storeIndex,
+                  contactIndex: contactSelectedIndex,
+                  itemList: [],
+                ), //TODO: CHANGE INDEX TO BOX AMES TO AVOID OVERWRITIN G
+              ),
+            );
           }
           contactSelected = false;
           searchSelected = false;
@@ -107,11 +122,46 @@ class _ContactsListPageState extends State<ContactsListPage> {
             itemCount: box.length,
             itemBuilder: (context, index) {
               return InkWell(
-                  onTap: () {},
-                  child: ContactList("Xevenst ${contactBox.length}"));
+                onTap: () {
+                  if (contactSelectedIndex.any((element) => element == index)) {
+                    contactSelectedIndex.remove(index);
+                  } else {
+                    contactSelectedIndex.add(index);
+                    contactSelectedIndex.sort();
+                  }
+                  selectCounter = contactSelectedIndex.length;
+                  setState(() {
+                    if (selectCounter > 0) {
+                      contactSelected = true;
+                    } else {
+                      contactSelected = false;
+                    }
+                  });
+                },
+                child: ContactList(
+                    context,
+                    contactBox.getAt(index)!.contactName,
+                    contactSelectedIndex.any((element) => element == index),
+                    contactBox,
+                    setState,
+                    index,
+                    contactSelected,
+                    contactSelectedIndex,
+                    selectCounter),
+              );
             },
           );
         },
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(25),
+        height: 80.0,
+        color: Colors.grey[500],
+        child: Text(
+            selectCounter > 1
+                ? '$selectCounter contacts selected'
+                : '$selectCounter contact selected',
+            style: const TextStyle(fontSize: 20)),
       ),
     );
   }
@@ -119,10 +169,10 @@ class _ContactsListPageState extends State<ContactsListPage> {
   void addContact() async {
     final box = Hive.box<Contact>('Contact');
     print(contactBox.length);
-    Contact temp = Contact(contactName: "Xevenst");
-    await box.put(box.length, temp);
+    Contact temp = Contact(contactName: "Xevenst ${box.length}");
+    await box.put(temp.contactName, temp);
     setState(() {
-      contactSelected = true;
+      contactSelected = false;
     });
   }
 

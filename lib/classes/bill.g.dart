@@ -22,7 +22,7 @@ class BillAdapter extends TypeAdapter<Bill> {
       boughtItems: (fields[2] as List).cast<Item>(),
       dateTime: fields[3] as String,
       price: fields[4] as num,
-      priceCurrency: fields[5] as Currency,
+      priceCurrency: fields[5] as String,
       userPaying: fields[6] as Contact,
       finished: fields[7] == null ? false : fields[7] as bool,
     );

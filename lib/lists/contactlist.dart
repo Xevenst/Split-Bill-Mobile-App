@@ -1,14 +1,54 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: non_constant_identifier_names
 
-Widget ContactList(String contactName) {
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+Column ContactList(
+    BuildContext context,
+    String contactName,
+    bool selected,
+    Box box,
+    StateSetter setState,
+    int index,
+    bool contactSelected,
+    List<int> contactSelectedIndex,
+    int selectCounter) {
   return Column(
     children: [
       Container(
         child: ListTile(
           leading: CircleAvatar(
-            child: Text(contactName[0]),
+            child: selected == true
+                ? const Icon(Icons.check)
+                : Text(contactName[0]),
           ),
           title: Text(contactName),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.info),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.edit),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await box.delete(contactName);
+
+                  setState(() {
+                    contactSelectedIndex.clear();
+                    selectCounter = contactSelectedIndex.length;
+                    contactSelected = false;
+                    print(selectCounter);
+                  });
+                },
+                icon: const Icon(Icons.delete),
+              ),
+            ],
+          ),
         ),
       ),
       const Divider(

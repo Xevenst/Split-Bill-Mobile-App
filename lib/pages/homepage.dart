@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                   box.get(index)!.storeName,
                   box.get(index)?.billDesc,
                   box.get(index)!.price.toString(),
-                  box.get(index)!.priceCurrency.code,
+                  box.get(index)!.priceCurrency,
                   box.get(index)!.userPaying,
                   box.get(index)!.finished);
             },

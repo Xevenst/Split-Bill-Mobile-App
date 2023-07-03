@@ -21,7 +21,7 @@ class StoreAdapter extends TypeAdapter<Store> {
       storeDesc: fields[1] as String?,
       storeOpenTime: fields[2] as String?,
       storeItems: (fields[3] as List?)?.cast<Item>(),
-      storeCurrency: fields[4] as Currency,
+      storeCurrency: fields[4] as String,
     );
   }
 

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:currency_picker/currency_picker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/contact.dart';
@@ -19,7 +17,7 @@ class Bill extends HiveObject{
   @HiveField(4)
   late num price;
   @HiveField(5)
-  late Currency priceCurrency;
+  late String priceCurrency;
   @HiveField(6)
   late Contact userPaying;
   @HiveField(7,defaultValue: false)
