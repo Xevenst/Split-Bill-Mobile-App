@@ -68,7 +68,7 @@ class _StoreListPageState extends State<StoreListPage> {
             context,
             MaterialPageRoute(
               settings: const RouteSettings(name: "AddStorePage"),
-              builder: (context) => AddStorePage(editMode: false),
+              builder: (context) => AddStorePage(editMode: false,),
             ),
           ).then(onPop);
         },

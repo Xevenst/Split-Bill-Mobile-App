@@ -70,9 +70,6 @@ class _AddContactPageState extends State<AddContactPage> {
             Padding(
               padding: EdgeInsets.all(20),
               child: TextFormField(
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]")),
-                ],
                 controller: desController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),

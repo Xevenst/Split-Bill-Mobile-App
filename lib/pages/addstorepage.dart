@@ -2,10 +2,9 @@
 
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/store.dart';
-import 'package:splitbill/lists/itemlist.dart';
+import 'package:splitbill/lists/itemlistedit.dart';
 
 import '../classes/item.dart';
 import 'additempage.dart';
@@ -37,7 +36,9 @@ class _AddStorePageState extends State<AddStorePage> {
       storeController.text = widget.boxName!;
       curController.text = widget.boxCurrency!;
       currencySelected = widget.boxCurrency!;
+      itemList = storeBox.get(widget.boxName).storeItems;
     }
+    print(itemList.length);
   }
 
   @override
@@ -72,6 +73,7 @@ class _AddStorePageState extends State<AddStorePage> {
                 storeItems: itemList,
                 storeCurrency: currencySelected,
             );
+            print(newStore.storeItems?.length);
             storeBox.put(storeController.text, newStore);
             Navigator.pop(context);
             setState(() {});
@@ -83,6 +85,7 @@ class _AddStorePageState extends State<AddStorePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //STORE NAME
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: TextFormField(
@@ -101,6 +104,7 @@ class _AddStorePageState extends State<AddStorePage> {
                   },
                 ),
               ),
+              //STORE DESCRIPTION
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: TextFormField(
@@ -111,29 +115,7 @@ class _AddStorePageState extends State<AddStorePage> {
                   ),
                 ),
               ),
-              Center(
-                // padding: const EdgeInsets.all(5),
-                child: Text(itemList.isEmpty
-                    ? 'Item list is empty, add item by using the plus button below'
-                    : itemList.length > 1
-                        ? 'Items:'
-                        : 'Item:'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: itemList.length,
-                  itemBuilder: (context, index) {
-                    return ItemList(
-                      itemList[index].itemName,
-                      itemList[index].itemDesc,
-                      itemList[index].itemPrice,
-                    );
-                  },
-                ),
-              ),
+              //CURRENCY
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: TextFormField(
@@ -185,6 +167,29 @@ class _AddStorePageState extends State<AddStorePage> {
                     });
                   },
                   icon: Icon(Icons.add),
+                ),
+              ),
+              Center(//ITEMS
+                // padding: const EdgeInsets.all(5),
+                child: Text(itemList.isEmpty
+                    ? 'Item list is empty, add item by using the plus button above'
+                    : itemList.length > 1
+                        ? 'Items:'
+                        : 'Item:'),
+              ),
+              Padding(
+                padding: itemList.isNotEmpty?const EdgeInsets.all(20):const EdgeInsets.all(0),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: itemList.length,
+                  itemBuilder: (context, index) {
+                    return ItemListEdit(
+                      itemList[index].itemName,
+                      itemList[index].itemDesc,
+                      itemList[index].itemPrice,
+                    );
+                  },
                 ),
               ),
             ],

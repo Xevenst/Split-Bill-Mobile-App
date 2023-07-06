@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/lists/contactlist.dart';
-import 'package:splitbill/pages/assignsplitpage.dart';
+import 'package:splitbill/pages/selectitempage.dart';
 
 import '../classes/store.dart';
 import 'addcontactpage.dart';
@@ -101,11 +101,10 @@ class _ContactsListPageState extends State<ContactsListPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                settings: const RouteSettings(name: "AssignSplitPage"),
-                builder: (context) => AssignSplitPage(
+                settings: const RouteSettings(name: "SelectItemPage"),
+                builder: (context) => SelectItemPage(
                   storeIndex: widget.storeIndex,
                   contactIndex: contactSelectedIndex,
-                  itemList: [],
                 ), //TODO: CHANGE INDEX TO BOX AMES TO AVOID OVERWRITIN G
               ),
             );
