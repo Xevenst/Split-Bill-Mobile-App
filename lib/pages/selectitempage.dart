@@ -6,6 +6,25 @@ import '../classes/item.dart';
 import '../classes/store.dart';
 import '../lists/itemCard.dart';
 
+class ItemSelected {
+  Item item;
+  int quantity;
+  ItemSelected({
+    required this.item,
+    required this.quantity,
+  });
+  void addQuantity() {
+    quantity += 1;
+  }
+
+  void reduceQuantity() {
+    quantity -= 1;
+  }
+
+  Item getItem() {
+    return item;
+  }
+}
 
 class SelectItemPage extends StatefulWidget {
   const SelectItemPage({
@@ -21,12 +40,13 @@ class SelectItemPage extends StatefulWidget {
 }
 
 class _SelectItemPageState extends State<SelectItemPage> {
-  bool selected = false;
+  ValueNotifier<bool> selected = ValueNotifier<bool>(false);
   late final List<Item> storeItems =
       storeBox.getAt(widget.storeIndex).storeItems;
   late ValueNotifier<List<int>> count;
   late ValueNotifier<num> totalprice;
-  List<Item> itemSelected = [];
+  ValueNotifier<List<ItemSelected>> selectedItem =
+      ValueNotifier<List<ItemSelected>>([]);
   late Box storeBox;
 
   @override
@@ -35,7 +55,6 @@ class _SelectItemPageState extends State<SelectItemPage> {
     storeBox = Hive.box<Store>('Store');
     count = ValueNotifier<List<int>>(List.filled(storeItems.length, 0));
     totalprice = ValueNotifier<num>(0);
-    print(count);
   }
 
   @override
@@ -48,7 +67,7 @@ class _SelectItemPageState extends State<SelectItemPage> {
       //FLOATING ACTION BUTTON ===================================
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (selected) {
+          if (selected.value) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -56,7 +75,7 @@ class _SelectItemPageState extends State<SelectItemPage> {
                 builder: (context) => AssignSplitPage(
                     storeIndex: widget.storeIndex,
                     contactIndex: widget.contactIndex,
-                    itemSelected: itemSelected),
+                    itemSelected: selectedItem.value),
               ),
             );
             //TODO: SEND TO ASSIGN SPLITS
@@ -79,33 +98,17 @@ class _SelectItemPageState extends State<SelectItemPage> {
               child: ListView.builder(
                 itemCount: storeItems.length,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (itemSelected.contains(storeItems[index])) {
-                          itemSelected.remove(storeItems[index]);
-                          if (itemSelected.isEmpty) {
-                            selected = false;
-                          }
-                          totalprice.value -= storeItems[index].itemPrice;
-                        } else {
-                          itemSelected.add(storeItems[index]);
-                          selected = true;
-                          totalprice.value += storeItems[index].itemPrice;
-                        }
-                      });
-                    },
-                    child: ItemList(
+                  return ItemList(
                       storeItems[index],
-                      itemSelected.contains(storeItems[index]),
+                      selectedItem.value
+                          .any((e) => e.item == storeItems[index]),
                       setState,
                       count,
-                      itemSelected,
                       storeBox.getAt(widget.storeIndex).storeCurrency,
                       totalprice,
                       index,
-                    ),
-                  );
+                      selectedItem,
+                      selected);
                 },
               ),
             ),
@@ -115,9 +118,9 @@ class _SelectItemPageState extends State<SelectItemPage> {
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: itemSelected.length,
+              itemCount: selectedItem.value.length,
               itemBuilder: (context, index) {
-                return ItemCard(itemSelected[index],count.value[index]);
+                return ItemCard(selectedItem.value[index]);
               },
             ),
           ),
@@ -137,4 +140,3 @@ class _SelectItemPageState extends State<SelectItemPage> {
     );
   }
 }
-

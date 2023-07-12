@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../classes/item.dart';
+import 'package:splitbill/pages/selectitempage.dart';
 
 class AssignSplitPage extends StatefulWidget {
   const AssignSplitPage({
@@ -12,7 +11,7 @@ class AssignSplitPage extends StatefulWidget {
 
   final int storeIndex;
   final List<int> contactIndex;
-  final List<Item> itemSelected;
+  final List<ItemSelected> itemSelected;
   
   @override
   State<AssignSplitPage> createState() => _AssignSplitPageState();
