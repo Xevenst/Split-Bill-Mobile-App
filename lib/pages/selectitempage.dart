@@ -6,6 +6,7 @@ import '../classes/item.dart';
 import '../classes/store.dart';
 import '../lists/itemCard.dart';
 
+
 class SelectItemPage extends StatefulWidget {
   const SelectItemPage({
     super.key,
@@ -20,11 +21,11 @@ class SelectItemPage extends StatefulWidget {
 }
 
 class _SelectItemPageState extends State<SelectItemPage> {
-  ValueNotifier<int> count= ValueNotifier<int>(0);
-  ValueNotifier<num> totalprice = ValueNotifier<num>(0);
   bool selected = false;
   late final List<Item> storeItems =
       storeBox.getAt(widget.storeIndex).storeItems;
+  late ValueNotifier<List<int>> count;
+  late ValueNotifier<num> totalprice;
   List<Item> itemSelected = [];
   late Box storeBox;
 
@@ -32,6 +33,9 @@ class _SelectItemPageState extends State<SelectItemPage> {
   void initState() {
     super.initState();
     storeBox = Hive.box<Store>('Store');
+    count = ValueNotifier<List<int>>(List.filled(storeItems.length, 0));
+    totalprice = ValueNotifier<num>(0);
+    print(count);
   }
 
   @override
@@ -99,6 +103,7 @@ class _SelectItemPageState extends State<SelectItemPage> {
                       itemSelected,
                       storeBox.getAt(widget.storeIndex).storeCurrency,
                       totalprice,
+                      index,
                     ),
                   );
                 },
@@ -112,7 +117,7 @@ class _SelectItemPageState extends State<SelectItemPage> {
               shrinkWrap: true,
               itemCount: itemSelected.length,
               itemBuilder: (context, index) {
-                return ItemCard(itemSelected[index]);
+                return ItemCard(itemSelected[index],count.value[index]);
               },
             ),
           ),
@@ -132,3 +137,4 @@ class _SelectItemPageState extends State<SelectItemPage> {
     );
   }
 }
+
