@@ -1,4 +1,3 @@
-import 'package:currency_picker/currency_picker.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/item.dart';

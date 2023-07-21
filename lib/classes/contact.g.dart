@@ -18,20 +18,23 @@ class ContactAdapter extends TypeAdapter<Contact> {
     };
     return Contact(
       contactName: fields[0] as String,
-      contactImage: fields[1] as String?,
-      contactDebt: fields[2] == null ? 0 : fields[2] as num?,
+      contactDesc: fields[1] as String?,
+      contactImage: fields[2] as String?,
+      contactDebt: fields[3] == null ? 0 : fields[3] as num?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Contact obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.contactName)
       ..writeByte(1)
-      ..write(obj.contactImage)
+      ..write(obj.contactDesc)
       ..writeByte(2)
+      ..write(obj.contactImage)
+      ..writeByte(3)
       ..write(obj.contactDebt);
   }
 

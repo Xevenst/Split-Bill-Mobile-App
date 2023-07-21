@@ -35,9 +35,11 @@ class _AddContactPageState extends State<AddContactPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: () {
+        onPressed: () async {
           if (formKey.currentState!.validate()) {
             formKey.currentState?.save();
+            Contact temp = Contact(contactName: nameController.text,);
+            await contactBox.put(nameController.text,temp);
             Navigator.pop(context);
             setState(() {});
           }
@@ -50,9 +52,9 @@ class _AddContactPageState extends State<AddContactPage> {
             Padding(
               padding: EdgeInsets.all(20),
               child: TextFormField(
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]")),
-                ],
+                // inputFormatters: <TextInputFormatter>[
+                //   FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]")),
+                // ],
                 controller: nameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),

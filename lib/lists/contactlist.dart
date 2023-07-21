@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../classes/contact.dart';
+
 Column ContactList(
     BuildContext context,
     String contactName,
@@ -11,7 +13,7 @@ Column ContactList(
     StateSetter setState,
     int index,
     bool contactSelected,
-    List<int> contactSelectedIndex,
+    List<Contact> contactSelectedIndex,
     int selectCounter) {
   return Column(
     children: [
@@ -37,7 +39,6 @@ Column ContactList(
               IconButton(
                 onPressed: () async {
                   await box.delete(contactName);
-
                   setState(() {
                     contactSelectedIndex.clear();
                     selectCounter = contactSelectedIndex.length;
@@ -57,5 +58,29 @@ Column ContactList(
         height: 5,
       ),
     ],
+  );
+}
+
+Widget Contacts(Contact contact) {
+  return Padding(
+    padding: const EdgeInsets.all(8),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 30,
+              child: Text(contact.contactName[0]),
+            ),
+            Text(contact.contactName),
+          ],
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+      ],
+    ),
   );
 }

@@ -4,9 +4,9 @@ import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/store.dart';
-import 'package:splitbill/lists/itemlistedit.dart';
 
 import '../classes/item.dart';
+import '../lists/itemlist.dart';
 import 'additempage.dart';
 
 class AddStorePage extends StatefulWidget {
