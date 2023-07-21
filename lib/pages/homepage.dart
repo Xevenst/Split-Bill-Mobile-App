@@ -9,6 +9,7 @@ import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/lists/billlist.dart';
 import 'package:splitbill/pages/settingspage.dart';
 import 'package:splitbill/pages/storelistpage.dart';
+import 'package:splitbill/pages/viewbillpage.dart';
 
 import '../classes/store.dart';
 
@@ -72,13 +73,27 @@ class _HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: box.length,
             itemBuilder: (context, index) {
-              return BillList(
-                  box.get(index)!.storeName,
-                  box.get(index)?.billDesc,
-                  box.get(index)!.price.toString(),
-                  box.get(index)!.priceCurrency,
-                  box.get(index)!.userPaying,
-                  box.get(index)!.finished);
+              print('printing');
+              return InkWell(
+                onTap: () async {
+                  await Hive.openBox<Bill>('Bill');
+                  print("Pushing $index");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      settings: const RouteSettings(name: "ViewBillPage"),
+                      builder: (context) => ViewBillPage(storeIndex: index),
+                    ),
+                  );
+                },
+                child: BillList(
+                    box.getAt(index)!.storeName,
+                    box.getAt(index)?.billDesc,
+                    box.getAt(index)!.price.toString(),
+                    box.getAt(index)!.priceCurrency,
+                    box.getAt(index)!.userPaying,
+                    box.getAt(index)!.finished),
+              );
             },
           );
         },
@@ -121,7 +136,7 @@ class _HomePageState extends State<HomePage> {
 
   resetTemp() async {
     final box = Hive.box<Bill>('Bill');
-    if (box.length!=0) {
+    if (box.length != 0) {
       await Hive.box<Bill>('Bill').clear();
     }
   }

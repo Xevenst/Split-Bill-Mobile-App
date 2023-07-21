@@ -132,7 +132,14 @@ Widget AssignSplitItem(
       children: [
         ListTile(
           title: Text(itemAssign.item.itemName),
-          trailing: Text('${itemAssign.quantity} x ${itemAssign.item.itemPrice.toString()} = ${itemAssign.totalItemPrice}'),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              itemAssign.contact.isEmpty?const Text(''):Text('Each person pays: ${itemAssign.totalItemPrice/itemAssign.contact.length}'),
+              const SizedBox(width: 200,),
+              Text('${itemAssign.quantity} x ${itemAssign.item.itemPrice.toString()} = ${itemAssign.totalItemPrice}'),
+            ],
+          ),
           subtitle: itemAssign.contact.isEmpty?const Text(''):ListView.builder(
             shrinkWrap: true,
             itemCount: itemAssign.contact.length,

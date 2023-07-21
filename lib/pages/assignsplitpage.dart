@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:splitbill/lists/itemlist.dart';
 import 'package:splitbill/pages/selectitempage.dart';
 
@@ -8,6 +9,7 @@ import '../classes/contact.dart';
 import '../classes/item.dart';
 import '../classes/store.dart';
 import '../lists/contactlist.dart';
+import '../classes/itemassign.dart';
 
 class AssignSplitPage extends StatefulWidget {
   const AssignSplitPage({
@@ -33,10 +35,12 @@ class _AssignSplitPageState extends State<AssignSplitPage> {
   late Box storeBox;
   late Box contactBox;
   late Contact tempContactSelect = widget.contact[0];
+  late Box billBox;
   List<Item> itemSelected = [];
 
   @override
   void initState() {
+    billBox = Hive.box<Bill>('Bill');
     storeBox = Hive.box<Store>('Store');
     contactBox = Hive.box<Contact>('Contact');
     super.initState();
@@ -68,7 +72,7 @@ class _AssignSplitPageState extends State<AssignSplitPage> {
           ),
           const SizedBox(width: 30),
           IconButton(
-              onPressed: () {
+              onPressed: () async {
                 bool flag = true;
                 for (int i = 0; i < itemAssign.value.length; i++) {
                   if (itemAssign.value[i].contact.isEmpty) {
@@ -77,16 +81,21 @@ class _AssignSplitPageState extends State<AssignSplitPage> {
                   }
                 }
                 if (flag) {
+                  print(widget.store.storeName);
                   Bill temp = Bill(
                       storeName: widget.store.storeName,
-                      boughtItems: itemSelected,
-                      dateTime: DateTime.now().toString(),
+                      boughtItems: itemAssign.value,
+                      dateTime: DateFormat('yMMMMEEEEd').format(DateTime.now()).toString(),
                       price: widget.totalprice,
                       priceCurrency: widget.store.storeCurrency,
                       userPaying: widget.contact[0]);
+                  await billBox.put(DateFormat('yMMMMEEEEd').format(DateTime.now()).toString(), temp);
+                Navigator.popUntil(context, (route) => route.isFirst);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Every items are not yet distributed')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Every items are not yet distributed')),
+                  );
                 }
               },
               icon: const Icon(Icons.check)),
@@ -113,7 +122,7 @@ class _AssignSplitPageState extends State<AssignSplitPage> {
                                   tempContactSelect.contactName)]);
                       print("Removed, now: ${itemAssign.value[index].contact}");
                     } else {
-                      print("DoESN exists, adding");
+                      print("DoESN't exists, adding");
                       itemAssign.value[index].contact.add(tempContactSelect);
                       print("Added, now: ${itemAssign.value[index].contact}");
                     }
@@ -158,3 +167,5 @@ class ItemAssign {
       required this.quantity,
       required this.totalItemPrice});
 }
+
+

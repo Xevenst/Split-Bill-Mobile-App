@@ -1,6 +1,8 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/classes/contact.dart';
-import 'package:splitbill/classes/item.dart';
+import 'package:splitbill/pages/assignsplitpage.dart';
+
+// import 'itemassign.g.dart';
 part 'bill.g.dart';
 
 @HiveType(typeId: 0)
@@ -10,7 +12,7 @@ class Bill extends HiveObject{
   @HiveField(1,defaultValue: "")
   late String? billDesc;
   @HiveField(2)
-  late List<Item> boughtItems;
+  late List<ItemAssign> boughtItems;
   @HiveField(3)
   late String dateTime;
   @HiveField(4)

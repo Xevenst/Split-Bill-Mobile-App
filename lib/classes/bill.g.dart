@@ -19,7 +19,7 @@ class BillAdapter extends TypeAdapter<Bill> {
     return Bill(
       storeName: fields[0] == null ? '' : fields[0] as String,
       billDesc: fields[1] == null ? '' : fields[1] as String?,
-      boughtItems: (fields[2] as List).cast<Item>(),
+      boughtItems: (fields[2] as List).cast<ItemAssign>(),
       dateTime: fields[3] as String,
       price: fields[4] as num,
       priceCurrency: fields[5] as String,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:splitbill/lists/itemlist.dart';
 import 'package:splitbill/pages/assignsplitpage.dart';
+import '../classes/bill.dart';
 import '../classes/contact.dart';
 import '../classes/item.dart';
 import '../classes/store.dart';
@@ -76,8 +77,10 @@ class _SelectItemPageState extends State<SelectItemPage> {
 
       //FLOATING ACTION BUTTON ===================================
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           if (selected.value) {
+            await Hive.openBox<Bill>('Bill');
+            // ignore: use_build_context_synchronously
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -142,7 +145,7 @@ class _SelectItemPageState extends State<SelectItemPage> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(25),
         height: 80.0,
-        color: Colors.blue[200],
+        color: Colors.grey[200],
         child: Text(
           'Total price: ${totalprice.value.toString()}',
           style: const TextStyle(fontSize: 20),

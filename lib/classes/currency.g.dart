@@ -29,7 +29,7 @@ class CurrencyAdapter extends TypeAdapter<Currency> {
   @override
   void write(BinaryWriter writer, Currency obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.code)
       ..writeByte(1)

@@ -54,7 +54,6 @@ Widget BillList(String billName, String? billDesc, String billTotalPrice,
                           TextStyle(color: Colors.red.shade400, fontSize: 16)),
             ],
           ),
-          onTap: () {},
         ),
       ),
       const Divider(

@@ -6,6 +6,7 @@ import 'package:splitbill/classes/bill.dart';
 import 'package:splitbill/classes/contact.dart';
 import 'package:splitbill/classes/currency.g.dart';
 import 'package:splitbill/classes/item.dart';
+import 'package:splitbill/classes/itemassign.g.dart';
 import 'package:splitbill/classes/store.dart';
 import 'package:splitbill/pages/homepage.dart';
 
@@ -19,6 +20,7 @@ void main() async {
   Hive.registerAdapter(ItemAdapter());
   Hive.registerAdapter(ContactAdapter());
   Hive.registerAdapter(CurrencyAdapter());
+  Hive.registerAdapter(ItemAssignAdapter());
   await Hive.openBox<Bill>('Bill');
   await Hive.openBox<Store>("Store");
   await Hive.openBox<Item>("Item");

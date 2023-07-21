@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../classes/contact.dart';
 
-Column ContactList(
+Widget ContactList(
     BuildContext context,
     String contactName,
     bool selected,
