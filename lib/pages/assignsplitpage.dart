@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -85,11 +87,11 @@ class _AssignSplitPageState extends State<AssignSplitPage> {
                   Bill temp = Bill(
                       storeName: widget.store.storeName,
                       boughtItems: itemAssign.value,
-                      dateTime: DateFormat('yMMMMEEEEd').format(DateTime.now()).toString(),
+                      dateTime: DateFormat('E, d MMM yyyy HH:mm:ss').format(DateTime.now()).toString(),
                       price: widget.totalprice,
                       priceCurrency: widget.store.storeCurrency,
                       userPaying: widget.contact[0]);
-                  await billBox.put(DateFormat('yMMMMEEEEd').format(DateTime.now()).toString(), temp);
+                  await billBox.put(DateFormat('E, d MMM yyyy HH:mm:ss').format(DateTime.now()).toString(), temp);
                 Navigator.popUntil(context, (route) => route.isFirst);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(

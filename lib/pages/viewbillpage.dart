@@ -49,9 +49,7 @@ class _ViewBillPageState extends State<ViewBillPage> {
             padding: const EdgeInsets.all(10),
             child: Center(
               child: Text(
-                'Created at: ${bill.dateTime.substring(
-                  0,
-                )}',
+                'Created at: ${bill.dateTime}',
                 style: const TextStyle(fontSize: 20),
               ),
             ),

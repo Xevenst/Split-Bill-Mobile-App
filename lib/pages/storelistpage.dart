@@ -29,7 +29,6 @@ class _StoreListPageState extends State<StoreListPage> {
   @override
   void dispose() {
     super.dispose();
-    storeBox.close();
   }
 
   Currency? currencyTempDebug;
@@ -44,20 +43,6 @@ class _StoreListPageState extends State<StoreListPage> {
             Navigator.of(context).pop();
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              addStore();
-            },
-            icon: const Icon(Icons.abc),
-          ),
-          IconButton(
-            onPressed: () {
-              resetStore();
-            },
-            icon: const Icon(Icons.delete),
-          ),
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -81,6 +66,7 @@ class _StoreListPageState extends State<StoreListPage> {
               return InkWell(
                 onTap: () async {
                   await Hive.openBox<Contact>('Contact');
+                  await Hive.openBox<Store>('Store');
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -108,38 +94,6 @@ class _StoreListPageState extends State<StoreListPage> {
 
   void onPop(dynamic value) async {
     await Hive.openBox<Store>('Store');
-    setState(() {});
-  }
-
-  addStore() async {
-    await Hive.openBox<Store>('Store');
-    showCurrencyPicker(
-      context: context,
-      showFlag: true,
-      showSearchField: true,
-      showCurrencyName: true,
-      showCurrencyCode: true,
-      onSelect: (Currency currency) {
-        print('Select currency: ${currency.name}');
-
-      },
-      favorite: ['USD'],
-    );
-    final storeBox = Hive.box<Store>('Store');
-    // Store temp = Store(
-    //   storeName: "Xevenst ${storeBox.length}",
-    //   storeItems: [],
-    // );
-    // await storeBox.put("Xevenst ${storeBox.length}", temp);
-    setState(() {});
-  }
-
-  resetStore() async {
-    await Hive.openBox<Store>('Store');
-    final storeBox = Hive.box<Store>('Store');
-    if (storeBox.length != 0) {
-      await Hive.box<Store>('Store').clear();
-    }
     setState(() {});
   }
 }

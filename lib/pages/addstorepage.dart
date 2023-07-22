@@ -44,7 +44,6 @@ class _AddStorePageState extends State<AddStorePage> {
   @override
   void dispose() {
     super.dispose();
-    storeBox.close();
   }
 
   @override
@@ -55,7 +54,7 @@ class _AddStorePageState extends State<AddStorePage> {
           icon: Icon(Icons.arrow_back),
           // tooltip: 'Go back',
           color: Colors.white,
-          onPressed: () {
+          onPressed: () async {
             Navigator.pop(context);
           },
         ),
