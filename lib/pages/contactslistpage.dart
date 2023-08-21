@@ -66,18 +66,18 @@ class _ContactsListPageState extends State<ContactsListPage> {
               },
             ),
           ),
-          IconButton(
-            onPressed: () {
-              addContact();
-            },
-            icon: const Icon(Icons.abc),
-          ),
-          IconButton(
-            onPressed: () {
-              resetContact();
-            },
-            icon: const Icon(Icons.restore),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     addContact();
+          //   },
+          //   icon: const Icon(Icons.abc),
+          // ),
+          // IconButton(
+          //   onPressed: () {
+          //     resetContact();
+          //   },
+          //   icon: const Icon(Icons.restore),
+          // ),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
@@ -169,23 +169,23 @@ class _ContactsListPageState extends State<ContactsListPage> {
     );
   }
 
-  void addContact() async {
-    final box = Hive.box<Contact>('Contact');
-    print(contactBox.length);
-    Contact temp = Contact(contactName: "Xevenst ${box.length}");
-    await box.put(temp.contactName, temp);
-    setState(() {
-      isContactSelected = false;
-    });
-  }
+  // void addContact() async {
+  //   final box = Hive.box<Contact>('Contact');
+  //   print(contactBox.length);
+  //   Contact temp = Contact(contactName: "Xevenst ${box.length}");
+  //   await box.put(temp.contactName, temp);
+  //   setState(() {
+  //     isContactSelected = false;
+  //   });
+  // }
 
-  void resetContact() async {
-    final box = Hive.box<Contact>('Contact');
-    if (box.length != 0) {
-      await Hive.box<Contact>('Contact').clear();
-    }
-    setState(() {
-      isContactSelected = false;
-    });
-  }
+  // void resetContact() async {
+  //   final box = Hive.box<Contact>('Contact');
+  //   if (box.length != 0) {
+  //     await Hive.box<Contact>('Contact').clear();
+  //   }
+  //   setState(() {
+  //     isContactSelected = false;
+  //   });
+  // }
 }

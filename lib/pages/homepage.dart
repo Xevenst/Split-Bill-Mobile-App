@@ -53,18 +53,18 @@ class _HomePageState extends State<HomePage> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.abc),
-            onPressed: () {
-              addTemp();
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.alarm),
-            onPressed: () {
-              resetTemp();
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.abc),
+          //   onPressed: () {
+          //     addTemp();
+          //   },
+          // ),
+          // IconButton(
+          //   icon: const Icon(Icons.alarm),
+          //   onPressed: () {
+          //     resetTemp();
+          //   },
+          // ),
         ],
       ),
       body: ValueListenableBuilder(
@@ -117,22 +117,22 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  addTemp() async {
-    final box = Hive.box<Bill>('Bill');
-    // Bill temp = Bill(
-    //   storeName: "Count ${box.length}",
-    //   billDesc: "Desc ${box.length}",
-    //   boughtItems: [
-    //     // Item(itemName: "A", itemDesc: "", itemCurrency: "", itemPrice: Random().nextInt(10000))
-    //   ],
-    //   dateTime: DateTime.now().toString(),
-    //   price: Random().nextInt(10000),
-    //   // priceCurrency: "NTD",
-    //   userPaying: Contact(contactName: "Xevenst"),
-    //   finished: Random().nextInt(10000)%2==0?false:true,
-    // );
-    // await box.put(box.length, temp);
-  }
+  // addTemp() async {
+  //   final box = Hive.box<Bill>('Bill');
+  //   // Bill temp = Bill(
+  //   //   storeName: "Count ${box.length}",
+  //   //   billDesc: "Desc ${box.length}",
+  //   //   boughtItems: [
+  //   //     // Item(itemName: "A", itemDesc: "", itemCurrency: "", itemPrice: Random().nextInt(10000))
+  //   //   ],
+  //   //   dateTime: DateTime.now().toString(),
+  //   //   price: Random().nextInt(10000),
+  //   //   // priceCurrency: "NTD",
+  //   //   userPaying: Contact(contactName: "Xevenst"),
+  //   //   finished: Random().nextInt(10000)%2==0?false:true,
+  //   // );
+  //   // await box.put(box.length, temp);
+  // }
 
   resetTemp() async {
     final box = Hive.box<Bill>('Bill');
